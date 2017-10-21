@@ -11,14 +11,15 @@ using System;
 namespace Daesan.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20171021034753_Initial")]
+    [Migration("20171021210945_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
+                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Daesan.Models.Data.Command", b =>
                 {
@@ -50,7 +51,7 @@ namespace Daesan.Migrations
 
                     b.Property<int>("CurrentScene");
 
-                    b.Property<DateTimeOffset>("FinishedAt");
+                    b.Property<DateTimeOffset?>("FinishedAt");
 
                     b.Property<DateTimeOffset>("StartedAt");
 

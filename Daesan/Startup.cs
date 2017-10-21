@@ -37,7 +37,7 @@ namespace Daesan
 
             services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseSqlite("Data Source=data.sqlite");
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<ChatService>();
@@ -51,6 +51,8 @@ namespace Daesan
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ApplicationServices.GetService<DatabaseContext>().Database.Migrate();
 
             app.UseMvc();
         }
