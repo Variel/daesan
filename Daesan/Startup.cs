@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Daesan.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace Daesan
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddJsonOptions(jo =>
             {
@@ -42,6 +43,14 @@ namespace Daesan
 
             services.AddScoped<ChatService>();
             services.AddScoped<UserContextService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.Add(new ServiceDescriptor(typeof(IConfiguration), Configuration));
+
+            var provider = services.BuildServiceProvider();
+            provider.GetService<DatabaseContext>().Database.Migrate();
+
+            return provider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,8 +60,6 @@ namespace Daesan
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.ApplicationServices.GetService<DatabaseContext>().Database.Migrate();
 
             app.UseMvc();
         }
