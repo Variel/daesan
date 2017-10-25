@@ -19,7 +19,7 @@ namespace Daesan.Services
 
         public async Task<MessageResponse> GetResponseAsync(string userKey, string type, string content)
         {
-            content = content.Trim();
+            content = content.Trim().Replace(" ", "");
 
             var user = await _userContext.GetUserAsync(userKey);
 
