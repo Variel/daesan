@@ -47,7 +47,7 @@ namespace Daesan.Services
 
                 if (content == "대산")
                 {
-                    user.CurrentScene = 0;
+                    user.CurrentScene = 1;
                     await _database.SaveChangesAsync();
 
                     message = "나는 독립본부 안정근이다! 음모에 빠진 동료 김창수의 목숨을 구해주시오! 그는 국모시해범을 처단했으나 도리어 사형을 선고받았소.\n" +
