@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Daesan.Models.Response;
+using Microsoft.EntityFrameworkCore;
 
 namespace Daesan.Services
 {
@@ -23,7 +24,7 @@ namespace Daesan.Services
 
             var user = await _userContext.GetUserAsync(userKey);
 
-            var command = await _database.Commands.FindAsync(user.CurrentScene, content);
+            var command = await _database.Commands.SingleOrDefaultAsync(c => c.Input == content);
 
             if (command == null)
             {
